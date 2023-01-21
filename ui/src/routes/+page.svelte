@@ -86,7 +86,7 @@ async function onSubmit(event) {
     }
   
     // Send a POST request to the generate endpoint with the message as the request body
-    const response = await fetch('https://f0s3k2.onrender.com', {
+    const response = await fetch('https://f09s1k5.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

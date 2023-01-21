@@ -25,15 +25,15 @@
 			<li aria-current={$page.url.pathname.startsWith('https://AiHiPUniversity.com/contact') ? 'page' : undefined}>
 				<a href="https://AiHiPUniversity.com/contact">| Contact</a>
 			</li>
-			<li aria-current={$page.url.pathname === 'https://aihipuniversity.com/?tags=Courses' ? 'page' : undefined}>
-				<a href="https://aihipuniversity.com/?tags=Courses">| Courses</a>
+			<li aria-current={$page.url.pathname === 'https://aihipuniversity.com/?tags-0.00.-Courses-Category=All-Courses' ? 'page' : undefined}>
+				<a href="https://aihipuniversity.com/?tags-0.00.-Courses-Category=All-Courses">| Courses</a>
 			</li>
 			<li aria-current={$page.url.pathname.startsWith('/') ? 'page' : undefined}>
 				<a href="/">| Foskaay AI Dev Support</a>
 			</li>
-			<li aria-current={$page.url.pathname === 'https://aihipuniversity.com/?tags=Blog' ? 'page' : undefined}>
+			<!-- <li aria-current={$page.url.pathname === 'https://aihipuniversity.com/?tags=Blog' ? 'page' : undefined}>
 				<a href="https://aihipuniversity.com/?tags=Blog">| Blog</a>
-			</li>
+			</li> -->
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
