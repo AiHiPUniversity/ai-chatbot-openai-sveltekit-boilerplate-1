@@ -1,0 +1,9 @@
+// Rename this file from whitelist.js.Example to whitelist.js
+// Never allow localhost in your production server whitelist 
+// because anyone can connect as whitelisted domain once they runing on local host
+//You can add as many whitelist domains as you want
+
+// allowed origins is an array of allowed domains
+const allowedOrigins = ['https://example.com','http://localhost:5173'];
+
+export default allowedOrigins;

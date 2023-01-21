@@ -1,0 +1,60 @@
+/* style the chat appearance */
+
+#new-chat {
+    width: 100%;
+    display: block;
+    padding: 10px;
+    font-size: 1.2em;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  #prompts {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .prompts-section,
+  .features-section {
+    width: 50%;
+  }
+  
+  .prompts-section {
+    text-align: right;
+  }
+  
+  .features-section {
+    text-align: left;
+  }
+  
+  h2 {
+    margin: 0;
+  }
+  
+  .prompt {
+    display: block;
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    background-color: #eee;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .prompt:hover {
+    background-color: #ddd;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  li {
+    margin: 5px 0;
+  }
+  
