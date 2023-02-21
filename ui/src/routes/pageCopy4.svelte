@@ -254,19 +254,18 @@ async function onSelectChatInstance(event) {
       </div>
     {/if}
 
-<p>Foskaay Coding AI:</p>
-
+<p>NEW DISPLAY BELOW:</p>
 <!-- Set the reference to the message display container -->
+
+<!-- <script>
+  export let messages = [];
+</script> -->
+
 <div class="message-display" bind:this={messageDisplayContainer}>
-  <!-- This is the template code for displaying the messages -->
   {#each messages as message}
-      {#if message.type === 'user'}
-      <p class="user-message">{message.text}</p>
-    {:else}
-      <p class="ai-message">
-        <Prism language="javascript">{message.text}</Prism>
-      </p>
-    {/if}
+    <div class="chat-message {message.type}">
+      <Prism language="javascript">{message.text}</Prism>
+    </div>
   {/each}
 </div>
 
@@ -333,6 +332,11 @@ async function onSelectChatInstance(event) {
   }
   
   
+  /* Adjust the font size and font family of the messages */
+  .message {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+  }
   
   /* Add a hover effect to the prompts */
   .prompt:hover {
@@ -402,6 +406,20 @@ float: left;
     border-radius: 4px;
   }
   
+  .message {
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  .user {
+    background-color: #eee;
+  }
+
+  .bot {
+    background-color: #ddd;
+  }
 
   .features-section {
     margin: 20px;
@@ -418,29 +436,67 @@ float: left;
   overflow-y: scroll;
 }
 
+/* prevent the Save and Delete buttons from covering the input field 
+by positioning the buttons below the input field */
+/* .right-column #chat-instance-list input + button {
+  position: absolute;
+  bottom: 0;
+} */
+
+/* edit icon style */
+/* .edit-icon {
+    cursor: pointer;
+  } */ 
+
+  
+/* observer and scroll message styling */
+.message {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    /* max-width: 90%; */
+    word-wrap: break-word;
+  }
+
+  .user {
+    align-self: flex-end;
+    background-color: #d2f1e0;
+  }
+
+  .ai {
+    align-self: flex-start;
+    background-color: #eaeaea;
+  }
+
+  .message p {
+    margin: 0;
+  }
+
+  /* This is the CSS code for the message display container */
+  .message-display-container {
+    height: 700px;
+    overflow-y: auto;
+  }
 
 
-/* format message for better readability */
-/* Format messages with paragraphs */
-.message-display {
-  /* max-height: 300px; */
-  overflow-y: auto;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  /* format message for better readability */
+  .chat-message {
+  margin: 1rem 0;
 }
 
-.user-message {
-  margin: 10px 0;
-  padding: 5px;
-  background-color: #eee;
-  border-radius: 5px;
-}
-
-.ai-message {
-  margin: 10px 0;
-  padding: 5px;
+.chat-message.user {
   background-color: #f3f3f3;
-  border-radius: 5px;
-}  
+  padding: 0.5rem 1rem;
+  border-radius: 1rem 1rem 0 1rem;
+}
+
+.chat-message.ai {
+  background-color: #5f9ea0;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem 1rem 1rem 0;
+}
+
+
 </style>

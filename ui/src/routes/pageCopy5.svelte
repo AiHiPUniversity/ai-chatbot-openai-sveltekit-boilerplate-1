@@ -90,9 +90,12 @@ onMount(() => {
 
 async function onSubmit(event) {
     event.preventDefault();
+
+ // Format the user's message
+ const formattedUserMessage = messageUser.replace(/\n/g, '<br />');    
   
     // Add the user's message to the messages array
-    messages = [...messages, { text: messageUser, type: 'user' }];
+    messages = [...messages, { text: formattedUserMessage, type: 'user' }];
   
     // Save the messages to local storage
     try {
@@ -117,8 +120,12 @@ async function onSubmit(event) {
         let Response = await response.json();
         let rawAiResponse = Response.ai; //assign AI response data content to variable
 
+    // Format the AI's message
+    const formattedAiMessage = rawAiResponse.replace(/\n/g, '<br />');
+
+
       //pass the api response to highlightCode function to highlight its code
-        messageAi = highlightCode(rawAiResponse);
+        messageAi = highlightCode(formattedAiMessage);
         // let highlightedAiResponse = highlightCode(rawAiResponse);
 
         // Add the AI's message to the messages array
@@ -131,12 +138,18 @@ async function onSubmit(event) {
         // Handle the error
         console.error(error);
       }
+
+      // Clear the message input
+      messageUser = '';
+
+
     } else {
       alert('An error occurred while submitting the form.');
     }
   
     // Clear the message input
-    messageUser = '';
+    // messageUser = '';
+    
 }
   
 
@@ -254,22 +267,37 @@ async function onSelectChatInstance(event) {
       </div>
     {/if}
 
-<p>Foskaay Coding AI:</p>
-
+<p>NEW DISPLAY BELOW:</p>
 <!-- Set the reference to the message display container -->
+
+<!-- <script>
+  export let messages = [];
+</script> -->
+
 <div class="message-display" bind:this={messageDisplayContainer}>
-  <!-- This is the template code for displaying the messages -->
   {#each messages as message}
+    <div class="chat-message {message.type}">
+      <!-- {message.text} -->
       {#if message.type === 'user'}
-      <p class="user-message">{message.text}</p>
+      <p class="user-messageS">{message.text}</p>
     {:else}
-      <p class="ai-message">
+      <p class="ai-messageS">
         <Prism language="javascript">{message.text}</Prism>
       </p>
     {/if}
+    </div>
   {/each}
 </div>
 
+<!-- <div class="message-display" bind:this={messageDisplayContainer}>
+  {#each messages as message}
+    {#if message.type === 'user'}
+      <p class="user-message">{message.text}</p>
+    {:else}
+      <p class="ai-message">{message.text}</p>
+    {/if}
+  {/each}
+</div> -->
 
   
   </div>
@@ -333,6 +361,11 @@ async function onSelectChatInstance(event) {
   }
   
   
+  /* Adjust the font size and font family of the messages */
+  .message {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+  }
   
   /* Add a hover effect to the prompts */
   .prompt:hover {
@@ -402,6 +435,20 @@ float: left;
     border-radius: 4px;
   }
   
+  .message {
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  .user {
+    background-color: #eee;
+  }
+
+  .bot {
+    background-color: #ddd;
+  }
 
   .features-section {
     margin: 20px;
@@ -418,13 +465,74 @@ float: left;
   overflow-y: scroll;
 }
 
+/* prevent the Save and Delete buttons from covering the input field 
+by positioning the buttons below the input field */
+/* .right-column #chat-instance-list input + button {
+  position: absolute;
+  bottom: 0;
+} */
+
+/* edit icon style */
+/* .edit-icon {
+    cursor: pointer;
+  } */ 
+
+  
+/* observer and scroll message styling */
+.message {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    /* max-width: 90%; */
+    word-wrap: break-word;
+  }
+
+  .user {
+    align-self: flex-end;
+    background-color: #d2f1e0;
+  }
+
+  .ai {
+    align-self: flex-start;
+    background-color: #eaeaea;
+  }
+
+  /* .message p {
+    margin: 0;
+  } */
+
+  /* This is the CSS code for the message display container */
+  .message-display-container {
+    height: 700px;
+    overflow-y: auto;
+  }
 
 
-/* format message for better readability */
+  /* format message for better readability */
+  .chat-message {
+  margin: 1rem 0;
+}
+
+.chat-message.user {
+  background-color: #f3f3f3;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem 1rem 0 1rem;
+}
+
+.chat-message.ai {
+  background-color: #5f9ea0;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem 1rem 1rem 0;
+}
+
+
+
 /* Format messages with paragraphs */
-.message-display {
+/* .message-display { */
   /* max-height: 300px; */
-  overflow-y: auto;
+  /* overflow-y: auto;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -442,5 +550,8 @@ float: left;
   padding: 5px;
   background-color: #f3f3f3;
   border-radius: 5px;
-}  
+} */
+
+
+
 </style>
