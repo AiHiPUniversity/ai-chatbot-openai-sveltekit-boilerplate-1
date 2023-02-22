@@ -261,10 +261,7 @@ async function onSelectChatInstance(event) {
   <!-- This is the template code for displaying the messages -->
   {#each messages as message}
       {#if message.type === 'user'}
-      <p class="user-message">
-        <!-- {message.text} -->
-        <Prism language="javascript">{message.text}</Prism>
-      </p>
+      <p class="user-message">{message.text}</p>
     {:else}
       <p class="ai-message">
         <Prism language="javascript">{message.text}</Prism>
@@ -279,17 +276,7 @@ async function onSelectChatInstance(event) {
     
   {#if chatInstances.length > 0}
     <form on:submit|preventDefault={onSubmit}>
-      <!-- <input type="text" bind:value={messageUser} placeholder="Type your question here..." /> -->
-      <textarea
-      class="input-box"
-        bind:value={messageUser}
-        on:input={() => {
-          const el = event.target;
-          el.style.height = "auto";
-          el.style.height = el.scrollHeight + "px";
-      }}
-      style="border: 1px solid black;"
-    ></textarea>    
+      <input type="text" bind:value={messageUser} placeholder="Type your question here..." />
       <button type="submit">Ask Foskaay</button>
     </form>
   {/if}
@@ -456,23 +443,4 @@ float: left;
   background-color: #f3f3f3;
   border-radius: 5px;
 }  
-
-
-/* Text area style to initally look like input box */
-.input-box {
-  border: none;
-  resize: none;
-  font-size: 1rem;
-  padding: 0.5rem;
-  width: 100%;
-  height: 2rem;
-  line-height: 1.5;
-}
-
-textarea {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-
 </style>

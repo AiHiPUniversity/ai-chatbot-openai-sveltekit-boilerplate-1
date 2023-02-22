@@ -23,14 +23,12 @@
 //   library.add(faEdit, faCheck, faTimes); // Add the icons you want to use
  
   
-  let messageUser = ''; //user's query, question and prompts
-  let messageAi = ''; //foskaay AI response to user's query, question and prompts  
+  let message = ''; //user query, question and prompts
   let messages = []; //Add both User and Foskaay Ai chatBot response to display to user
   let chatId; // Auto generate unique ID with UUID per chat instance like ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
   let chatInstances = []; // array of chat instances added by clicking on "Create New Chat" button
   let newTitle = '';
-  // Get the reference to the message display container
-  let messageDisplayContainer;
+
 
   
   // Check if the window object exists to avoid errors in server-side rendering
@@ -69,17 +67,6 @@ onMount(() => {
     // Handle the error
     console.error(error);
   }
-
-
-      // Set up an observer to observe the message display container for any changes
-      const observer = new MutationObserver(() => {
-      // Scroll the message display container to the bottom to show the latest messages
-      messageDisplayContainer.scrollTop = messageDisplayContainer.scrollHeight;
-    });
-
-    // Start observing the message display container for changes
-    observer.observe(messageDisplayContainer, { childList: true, subtree: true });
-
 });
 
   
@@ -92,7 +79,7 @@ async function onSubmit(event) {
     event.preventDefault();
   
     // Add the user's message to the messages array
-    messages = [...messages, { text: messageUser, type: 'user' }];
+    messages = [...messages, { text: message, type: 'user' }];
   
     // Save the messages to local storage
     try {
@@ -108,21 +95,19 @@ async function onSubmit(event) {
       headers: {
         'Content-Type': 'application/json',
       }, 
-      body: JSON.stringify({ prompt: messageUser }),
+      body: JSON.stringify({ prompt: message }),
     });
      
     if (response.ok) {
 
       // Get the response from the API as JSON
-        let Response = await response.json();
-        let rawAiResponse = Response.ai; //assign AI response data content to variable
-
+        let aiResponse = await response.json();
       //pass the api response to highlightCode function to highlight its code
-        messageAi = highlightCode(rawAiResponse);
-        // let highlightedAiResponse = highlightCode(rawAiResponse);
+        let ai = highlightCode(aiResponse.ai)
 
         // Add the AI's message to the messages array
-        messages = [...messages, { text: messageAi, type: 'ai' }];
+        messages = [...messages, { text: ai, type: 'ai' }];
+          
   
       // Save the messages to local storage
       try {
@@ -136,7 +121,7 @@ async function onSubmit(event) {
     }
   
     // Clear the message input
-    messageUser = '';
+    message = '';
 }
   
 
@@ -152,12 +137,10 @@ function highlightCode(ai: string) {
         const code = match[2];
         ai = ai.replace(match[0], `<Prism language="${language}">${code}</Prism>`);
     }
-    console.log("Highlight Function ReturnAi", ai)
+    console.log("ReturnAi", ai)
     return ai;
     
 }
-
-
 
 
   // Function to create a new chat instance with unique id url and save old one in local storage
@@ -222,7 +205,7 @@ async function onSelectChatInstance(event) {
 }
 
 
- 
+
 </script>
 
 
@@ -254,42 +237,23 @@ async function onSelectChatInstance(event) {
       </div>
     {/if}
 
-<p>Foskaay Coding AI:</p>
-
-<!-- Set the reference to the message display container -->
-<div class="message-display" bind:this={messageDisplayContainer}>
-  <!-- This is the template code for displaying the messages -->
-  {#each messages as message}
+    {#each messages as message}
       {#if message.type === 'user'}
-      <p class="user-message">
-        <!-- {message.text} -->
-        <Prism language="javascript">{message.text}</Prism>
-      </p>
-    {:else}
-      <p class="ai-message">
-        <Prism language="javascript">{message.text}</Prism>
-      </p>
-    {/if}
-  {/each}
-</div>
-
-
-  
+        <div class="message user">
+          {message.text}
+        </div>
+      {:else}
+        <!-- display ai response with highlighting with svelte-prism -->
+        <div class="message bot">
+          <Prism language={message.language}>{message.text}</Prism>
+        </div>
+      {/if}
+    {/each}
   </div>
     
   {#if chatInstances.length > 0}
     <form on:submit|preventDefault={onSubmit}>
-      <!-- <input type="text" bind:value={messageUser} placeholder="Type your question here..." /> -->
-      <textarea
-      class="input-box"
-        bind:value={messageUser}
-        on:input={() => {
-          const el = event.target;
-          el.style.height = "auto";
-          el.style.height = el.scrollHeight + "px";
-      }}
-      style="border: 1px solid black;"
-    ></textarea>    
+      <input type="text" bind:value={message} placeholder="Type your question here..." />
       <button type="submit">Ask Foskaay</button>
     </form>
   {/if}
@@ -346,6 +310,11 @@ async function onSelectChatInstance(event) {
   }
   
   
+  /* Adjust the font size and font family of the messages */
+  .message {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+  }
   
   /* Add a hover effect to the prompts */
   .prompt:hover {
@@ -415,6 +384,20 @@ float: left;
     border-radius: 4px;
   }
   
+  .message {
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  .user {
+    background-color: #eee;
+  }
+
+  .bot {
+    background-color: #ddd;
+  }
 
   .features-section {
     margin: 20px;
@@ -431,48 +414,17 @@ float: left;
   overflow-y: scroll;
 }
 
+/* prevent the Save and Delete buttons from covering the input field 
+by positioning the buttons below the input field */
+/* .right-column #chat-instance-list input + button {
+  position: absolute;
+  bottom: 0;
+} */
 
-
-/* format message for better readability */
-/* Format messages with paragraphs */
-.message-display {
-  /* max-height: 300px; */
-  overflow-y: auto;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.user-message {
-  margin: 10px 0;
-  padding: 5px;
-  background-color: #eee;
-  border-radius: 5px;
-}
-
-.ai-message {
-  margin: 10px 0;
-  padding: 5px;
-  background-color: #f3f3f3;
-  border-radius: 5px;
-}  
-
-
-/* Text area style to initally look like input box */
-.input-box {
-  border: none;
-  resize: none;
-  font-size: 1rem;
-  padding: 0.5rem;
-  width: 100%;
-  height: 2rem;
-  line-height: 1.5;
-}
-
-textarea {
-  max-height: 200px;
-  overflow-y: auto;
-}
+/* edit icon style */
+/* .edit-icon {
+    cursor: pointer;
+  } */ 
 
 
 </style>

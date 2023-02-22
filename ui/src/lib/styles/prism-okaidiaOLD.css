@@ -1,16 +1,8 @@
-/* 
-This is Prism theme used with svelte-prism 
-
+/* This is Prism theme used with svelte-prism 
 Svelte-Prism: https://www.npmjs.com/package/svelte-prism
 --------------------------------
 Theme Name: prism-okaidia
-
-Css Code Link: 
-https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-okaidia.min.css
-
-Css Code Link Source Map (download and copy the code to the end of this file):
- https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-okaidia.min.css
-
+Css Code Link: https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-okaidia.min.css
 */
 
 code[class*='language-'],
@@ -33,6 +25,11 @@ pre[class*='language-'] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
+    /* customization added */
+    /* Add a scrollbar to the code block */
+    overflow-y: scroll;   
+    /* Set a maximum height for the code block */
+    max-height: 870px;     
 }
 pre[class*='language-'] {
 	padding: 1em;
@@ -112,14 +109,6 @@ pre[class*='language-'] {
 	cursor: help;
 }
 /*# sourceMappingURL=prism-okaidia.min.css.map */
-{
-	"version": 3,
-	"sources": [
-		"prism-okaidia.css"
-	];
-	"names": [],
-	"mappings": "AAMA,uBACA,sBACC,MAAO,QACP,WAAY,IACZ,YAAa,EAAE,IAAI,eACnB,YAAa,QAAQ,CAAE,MAAM,CAAE,aAAa,CAAE,aAAa,CAAE,UAC7D,UAAW,IACX,WAAY,KACZ,YAAa,IACb,aAAc,OACd,WAAY,OACZ,UAAW,OACX,YAAa,IAEb,cAAe,EACf,YAAa,EACb,SAAU,EAEV,gBAAiB,KACjB,aAAc,KACd,YAAa,KACb,QAAS,KAIV,sBACC,QAAS,IACT,OAAQ,KAAK,EACb,SAAU,KACV,cAAe,KAGhB,iCACA,sBACC,WAAY,QAIb,iCACC,QAAS,KACT,cAAe,KACf,YAAa,OAMd,aAHA,eAEA,eADA,cAGC,MAAO,QAGR,mBACC,MAAO,QAGR,WACC,QAAS,GAKV,gBAEA,eAJA,gBAGA,cAFA,WAIC,MAAO,QAGR,eACA,cACC,MAAO,QAIR,iBAGA,eADA,YAEA,gBALA,gBAEA,cAIC,MAAO,QAMR,4BACA,qBAHA,cADA,gBAEA,WAGA,gBACC,MAAO,QAGR,cACA,kBAEA,kBADA,gBAEC,MAAO,QAGR,eACC,MAAO,QAIR,iBADA,aAEC,MAAO,QAIR,YADA,iBAEC,YAAa,IAEd,cACC,WAAY,OAGb,cACC,OAAQ"
-}
 
 /* other custom styles not included in the default theme above */
 
