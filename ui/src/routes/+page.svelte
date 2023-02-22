@@ -261,7 +261,10 @@ async function onSelectChatInstance(event) {
   <!-- This is the template code for displaying the messages -->
   {#each messages as message}
       {#if message.type === 'user'}
-      <p class="user-message">{message.text}</p>
+      <p class="user-message">
+        <!-- {message.text} -->
+        <Prism language="javascript">{message.text}</Prism>
+      </p>
     {:else}
       <p class="ai-message">
         <Prism language="javascript">{message.text}</Prism>
