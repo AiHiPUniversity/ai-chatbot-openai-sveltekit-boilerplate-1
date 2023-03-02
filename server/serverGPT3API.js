@@ -3,7 +3,6 @@ import * as dotenv from 'dotenv' // access and use API KEY stored in .env file
 import cors from 'cors' //allow make cross origin API request to server from frontend
 import allowedOrigins from './whitelist.js'; //allowed domains only
 import { Configuration, OpenAIApi } from 'openai' //Openai API wrapper
-import { toChatML, get_message } from "gpt-to-chatgpt"; //using this as wrapper to make chatgpt api call work till official openai package is upgraded
 
 
 //call config function to give access to .env API KEY variable
@@ -74,28 +73,30 @@ app.post('/', async (req, res) => {
     //from Openai's AI
     // But while making the call we bundle the user question/prompt and other
     // instructions to ensure we get the best response from the AI back to user
-    openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: toChatML((prompt)) 
-    }).then((data) => {
-      const aiResponse = get_message(data.data);
-      // console.log(aiResponse); // Log the response to the console for confirmation
-      // console.log((get_message(data.data)));
-      
-      // Send the response back to the frontend
-     res.status(200).send({
-       ai: aiResponse,
-     }); 
+    const response = await openai.createCompletion({
+      model: "text-davinci-003", //most powerful openai large language Ai model for now
+      prompt: `${prompt}`, //input text value of the form input box in sveltekit app ui
+      temperature: 1, // Higher values means the model will take more risks and can change/modify response for same question when asked again.
+      max_tokens: 3000, // If not specified, it auto limit reponses usually less than 50 character (thats about 50 words)The maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support over 8,000).
+      top_p: 1, // alternative to sampling with temperature, called nucleus sampling
+      frequency_penalty: 0.5, // Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+      presence_penalty: 0, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+      // user: "user123456", // optional but can be useful to detect user abusing your API request. You can use session ID or hash email/psw so each user is unique but still not individually identificable for openai
+    });
+
+    //Send the AI response back to user of 
+    // our chatGPT Ai chatBot SvelteKit powered frontend 
+    //in json format with a success status code of 200. 
+    res.status(200).send({
+      ai: response.data.choices[0].text
     });
 
 
     // logs error to the console and sends it back our chatGPT Ai chatBot SvelteKit powered frontend
     //with a status of 500 if there is any error caught in try block.
   } catch (error) {
-    console.log(error);
-    res.status(400).send({
-      message: error.message,
-    });
+    console.error(error)
+    res.status(500).send(error || 'Something went wrong communicating with Ai Foskaay');
   }
 })
 
