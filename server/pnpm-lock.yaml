@@ -4,15 +4,17 @@ specifiers:
   cors: ^2.8.5
   dotenv: ^16.0.3
   express: ^4.18.2
-  nodemon: ^2.0.20
-  openai: ^3.1.0
+  gpt-to-chatgpt: ^0.2.2
+  nodemon: ^2.0.21
+  openai: ^3.2.1
 
 dependencies:
   cors: 2.8.5
   dotenv: 16.0.3
   express: 4.18.2
-  nodemon: 2.0.20
-  openai: 3.1.0
+  gpt-to-chatgpt: 0.2.2
+  nodemon: 2.0.21
+  openai: 3.2.1
 
 packages:
 
@@ -340,6 +342,10 @@ packages:
       is-glob: 4.0.3
     dev: false
 
+  /gpt-to-chatgpt/0.2.2:
+    resolution: {integrity: sha512-PVrq6zVsV2ZfQ4xkNGhHpnVeiUnDxCK7YQn39eU7dh7lU9whVu8WuElwoM56OsDyJcJx0v2icu73U8H69t73wQ==}
+    dev: false
+
   /has-flag/3.0.0:
     resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
     engines: {node: '>=4'}
@@ -463,8 +469,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /nodemon/2.0.20:
-    resolution: {integrity: sha512-Km2mWHKKY5GzRg6i1j5OxOHQtuvVsgskLfigG25yTtbyfRGn/GNvIbRyOf1PSCKJ2aT/58TiuUsuOU5UToVViw==}
+  /nodemon/2.0.21:
+    resolution: {integrity: sha512-djN/n2549DUtY33S7o1djRCd7dEm0kBnj9c7S9XVXqRUbuggN1MZH/Nqa+5RFQr63Fbefq37nFXAE9VU86yL1A==}
     engines: {node: '>=8.10.0'}
     hasBin: true
     dependencies:
@@ -508,8 +514,8 @@ packages:
       ee-first: 1.1.1
     dev: false
 
-  /openai/3.1.0:
-    resolution: {integrity: sha512-v5kKFH5o+8ld+t0arudj833Mgm3GcgBnbyN9946bj6u7bvel4Yg6YFz2A4HLIYDzmMjIo0s6vSG9x73kOwvdCg==}
+  /openai/3.2.1:
+    resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==}
     dependencies:
       axios: 0.26.1
       form-data: 4.0.0

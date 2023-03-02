@@ -3,8 +3,6 @@ import * as dotenv from 'dotenv' // access and use API KEY stored in .env file
 import cors from 'cors' //allow make cross origin API request to server from frontend
 // import allowedOrigins from './whitelist.js'; //allowed domains only
 import { Configuration, OpenAIApi } from 'openai' //Openai API wrapper
-import { toChatML, get_message } from "gpt-to-chatgpt";
-
 
 
 //call config function to give access to .env API KEY variable
@@ -71,36 +69,26 @@ app.post('/', async (req, res) => {
     const prompt = req.body.prompt;
 
     // Make the OpenAI API call following the format you provided
-    // const completion = await openai.createChatCompletion({
-    //   model: "gpt-3.5-turbo",
-    //   messages: [
-    //     { role: "system", content: "You are a helpful assistant that helps developers with coding and programming tasks." },
-    //     { role: "user", content: {prompt} }],
-    // });
- 
-    openai.createChatCompletion({
+    const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: toChatML((prompt))
-    }).then((data) => {
-      const aiResponse = get_message(data.data);
-      console.log(aiResponse); // Log the response to the console for confirmation
-      // console.log((get_message(data.data)));
-      
-      // Send the response back to the frontend
-     res.status(200).send({
-       ai: aiResponse,
-     }); 
+      messages: [
+        { role: "system", content: "You are a helpful assistant that helps developers with coding and programming tasks." },
+        { role: "user", content: {prompt} }],
     });
-     
-    
+ 
+    console.log(completion.data.choices[0].message);
+    // Send the response back to the frontend
+    res.status(200).send({
+      ai: completion.data.choices[0].message,
+    }); 
   } catch (error) {
     console.log(error);
     res.status(400).send({
       message: error.message,
     });
   }
-}) 
- 
+})
+
 
 
 // start the server on specified port on localhost

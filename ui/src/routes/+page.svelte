@@ -132,7 +132,8 @@ async function onSubmit(event) {
         console.error(error);
       }
     } else {
-      alert('An error occurred while submitting the form.');
+      const errorResponse = await response.json();
+      alert(errorResponse.message);
     }
   
     // Clear the message input

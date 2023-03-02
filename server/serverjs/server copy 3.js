@@ -1,10 +1,8 @@
 import express from 'express' //backend server framework
 import * as dotenv from 'dotenv' // access and use API KEY stored in .env file
 import cors from 'cors' //allow make cross origin API request to server from frontend
-// import allowedOrigins from './whitelist.js'; //allowed domains only
+import allowedOrigins from './whitelist.js'; //allowed domains only
 import { Configuration, OpenAIApi } from 'openai' //Openai API wrapper
-import { toChatML, get_message } from "gpt-to-chatgpt";
-
 
 
 //call config function to give access to .env API KEY variable
@@ -27,14 +25,14 @@ const app = express()
 
 // configure the cors middleware to allow accepting and processing request from allowed domains
 app.use(cors({
-  // origin: (origin, callback) => {
-  //   // check if the origin is in the allowed origins array
-  //   if (allowedOrigins.indexOf(origin) !== -1) {
-  //     callback(null, true);
-  //   } else {
-  //     callback(new Error('Not allowed by CORS'));
-  //   }
-  // }
+  origin: (origin, callback) => {
+    // check if the origin is in the allowed origins array
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
 
 
@@ -63,44 +61,39 @@ app.get('/', async (req, res) => {
 app.post('/', async (req, res) => {
   // Check if the origin is in the allowed origins array/whitelist domains 
   // before processing request
-  // if (!allowedOrigins.includes(req.headers.origin)) {
-  //   return res.status(401).send({ message: 'Unauthorized: Origin not allowed' });
-  // } 
-     
+  if (!allowedOrigins.includes(req.headers.origin)) {
+    return res.status(401).send({ message: 'Unauthorized: Origin not allowed' });
+  }
+
   try {
     const prompt = req.body.prompt;
 
     // Make the OpenAI API call following the format you provided
-    // const completion = await openai.createChatCompletion({
-    //   model: "gpt-3.5-turbo",
-    //   messages: [
-    //     { role: "system", content: "You are a helpful assistant that helps developers with coding and programming tasks." },
-    //     { role: "user", content: {prompt} }],
-    // });
- 
-    openai.createChatCompletion({
+    const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: toChatML((prompt))
-    }).then((data) => {
-      const aiResponse = get_message(data.data);
-      console.log(aiResponse); // Log the response to the console for confirmation
-      // console.log((get_message(data.data)));
-      
-      // Send the response back to the frontend
-     res.status(200).send({
-       ai: aiResponse,
-     }); 
+      messages: [
+        { role: "system", content: "You are a helpful assistant that helps developers with coding and programming tasks." },
+        { role: "user", content: prompt }
+      ],
+      temperature: 1,
+      maxTokens: 3000,
+      topP: 1,
+      frequencyPenalty: 0.5,
+      presencePenalty: 0,
     });
-     
-    
+
+    // Send the response back to the frontend
+    res.status(200).send({
+      message: completion.data.choices[0].text,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({
       message: error.message,
     });
   }
-}) 
- 
+})
+
 
 
 // start the server on specified port on localhost
